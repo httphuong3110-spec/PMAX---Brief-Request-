@@ -823,6 +823,60 @@
       pitchingTimeline: v('pitchingTimeline'), criteria: v('criteria'),
     };
   }
+  <script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqm9jrNPr4QU6H2hfPI4xIJQL2DbfwHrcZPo0G-PLQnaU-4Wd8n8rbwO8vwlt66JvyjQ/exec';
+function collectPayload() {
+  const tierMap = {
+    lt100: 'Dưới 100 triệu/tháng',
+    lt300: '100–300 triệu/tháng',
+    gt300: 'Trên 300 triệu/tháng'
+  };
+  return {
+    company: v('company'),
+    brand: v('brand'),
+  };
+}
+async function submitForm() {
+  const payload = collectPayload();
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+    });
+    alert('Submit thành công!');
+  } catch (err) {
+    console.error(err);
+    alert('Submit lỗi');
+  }
+}
+  async function submitForm() {
+
+  const payload = collectPayload();
+
+  try {
+
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+    });
+
+    alert('Submit thành công!');
+
+  } catch (err) {
+
+    console.error(err);
+    alert('Submit lỗi');
+
+  }
+}
 </script>
 </body>
 </html>
