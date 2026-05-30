@@ -158,7 +158,11 @@
   </div>
 </div>
 
-<div class="progress-wrap">
+<div id="restore-banner" style="display:none;background:#EBF0FA;border-bottom:2px solid #0033A0;padding:10px 24px;">
+  <div style="max-width:780px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+    <span style="font-size:13px;font-weight:600;color:#0033A0;">💾 Thông tin bạn đã điền trước đó vẫn còn - tiếp tục từ chỗ đã dừng nhé!</span>
+  </div>
+</div>
   <div class="progress-info">
     <span class="progress-label">Tiến độ điền form</span>
     <span class="progress-count" id="progressCount">0 / 5 bước</span>
@@ -832,6 +836,111 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqm9jrNPr4QU6H2hfPI
       pitchingTimeline: v('pitchingTimeline'), criteria: v('criteria'),
     };
   }
+  // ── AUTO-SAVE & RESTORE ──────────────────────────────────────────
+  const DRAFT_KEY = 'pmax_brief_draft';
+
+  function saveDraft() {
+    const roleEl   = document.querySelector('input[name="picRole"]:checked');
+    const agencyEl = document.querySelector('input[name="agencyType"]:checked');
+    const pitchEl  = document.querySelector('input[name="pitchingYN"]:checked');
+    const draft = {
+      step: currentStep,
+      doneSteps: [...doneSteps],
+      budgetTier, duration, vatStatus,
+      fields: {},
+      radios: {
+        picRole:    roleEl   ? roleEl.value   : '',
+        agencyType: agencyEl ? agencyEl.value : '',
+        pitchingYN: pitchEl  ? pitchEl.value  : '',
+      }
+    };
+    document.querySelectorAll('input[type="text"],input[type="email"],input[type="tel"],input[type="date"],select,textarea').forEach(el => {
+      if (el.id) draft.fields[el.id] = el.value;
+    });
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft)); } catch(e) {}
+  }
+
+  function restoreDraft() {
+    let draft;
+    try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch(e) {}
+    if (!draft) return;
+
+    // restore text fields
+    Object.entries(draft.fields || {}).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    });
+
+    // restore radios
+    Object.entries(draft.radios || {}).forEach(([name, val]) => {
+      if (!val) return;
+      const radio = document.querySelector(`input[name="${name}"][value="${val}"]`);
+      if (radio) {
+        radio.checked = true;
+        radio.closest('.radio-item')?.classList.add('selected');
+        // trigger side effects
+        if (name === 'agencyType') {
+          document.getElementById('agency-detail-wrap').style.display = (val === 'agency' || val === 'hybrid') ? 'flex' : 'none';
+        }
+        if (name === 'pitchingYN') togglePitching(val);
+      }
+    });
+
+    // restore budget tier
+    if (draft.budgetTier) {
+      budgetTier = draft.budgetTier;
+      document.querySelectorAll('.tier-btn').forEach(b => {
+        if (b.getAttribute('onclick')?.includes(draft.budgetTier)) b.classList.add('selected');
+      });
+      document.getElementById('budgetExactWrap').style.display = 'block';
+    }
+
+    // restore duration
+    if (draft.duration) {
+      duration = draft.duration;
+      document.querySelectorAll('.dur-btn').forEach(b => {
+        if (b.getAttribute('onclick')?.includes(`'${draft.duration}'`)) b.classList.add('selected');
+      });
+      if (draft.duration === 'custom') document.getElementById('durationCustom').style.display = 'block';
+    }
+
+    // restore VAT
+    if (draft.vatStatus) {
+      vatStatus = draft.vatStatus;
+      document.querySelectorAll('.vat-btn').forEach(b => {
+        if (b.getAttribute('onclick')?.includes(draft.vatStatus)) b.classList.add('selected');
+      });
+    }
+
+    // restore done steps and go to last step
+    (draft.doneSteps || []).forEach(s => doneSteps.add(s));
+    goStep(draft.step || 0);
+  }
+
+  // auto-save on any input change
+  document.addEventListener('input',  saveDraft);
+  document.addEventListener('change', saveDraft);
+  // also save when clicking radio/tier/dur/vat buttons (after state updates)
+  document.addEventListener('click', () => setTimeout(saveDraft, 50));
+
+  // clear draft after successful submit
+  const _origShowSuccess = showSuccess;
+  showSuccess = function(p) {
+    try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
+    document.getElementById('restore-banner').style.display = 'none';
+    _origShowSuccess(p);
+  };
+
+  // on page load - check for saved draft
+  window.addEventListener('DOMContentLoaded', () => {
+    let draft;
+    try { draft = JSON.parse(localStorage.getItem(DRAFT_KEY)); } catch(e) {}
+    if (draft && Object.keys(draft.fields || {}).some(k => draft.fields[k])) {
+      document.getElementById('restore-banner').style.display = 'block';
+      restoreDraft();
+    }
+  });
+
 </script>
 </body>
 </html>
