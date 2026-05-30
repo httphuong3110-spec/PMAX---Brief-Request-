@@ -658,7 +658,12 @@
         const w = document.querySelector('.budget-tiers').closest('.field');
         w.classList.add('error'); showErr(w,'Vui lòng chọn mức ngân sách'); ok = false;
       }
-      if (!errById('budgetExact',null,'Vui lòng điền ngân sách cụ thể')) ok = false;
+      if (budgetTier && !document.getElementById('budgetExact').value.trim()) {
+        const w = document.getElementById('budgetExactWrap');
+        const field = w.closest ? w.closest('.field') : document.getElementById('f-budget');
+        if (field) { field.classList.add('error'); showErr(field,'Vui lòng điền ngân sách cụ thể'); }
+        ok = false;
+      }
       if (!vatStatus) {
         const w = document.getElementById('f-vat');
         w.classList.add('error'); showErr(w,'Vui lòng chọn trạng thái VAT & AF'); ok = false;
