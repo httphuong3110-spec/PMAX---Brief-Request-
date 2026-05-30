@@ -163,10 +163,6 @@
     <span style="font-size:13px;font-weight:600;color:#0033A0;">💾 Thông tin bạn đã điền trước đó vẫn còn - tiếp tục từ chỗ đã dừng nhé!</span>
   </div>
 </div>
-  <div class="progress-info">
-    <span class="progress-label">Tiến độ điền form</span>
-    <span class="progress-count" id="progressCount">0 / 5 bước</span>
-  </div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 </div>
 
@@ -586,7 +582,6 @@
   function updateProgress() {
     const pct = (doneSteps.size / (totalSteps - 1)) * 100;
     document.getElementById('progressFill').style.width = Math.min(pct, 100) + '%';
-    document.getElementById('progressCount').textContent = doneSteps.size + ' / ' + (totalSteps - 1) + ' bước';
   }
   function updateStepper() {
     document.querySelectorAll('.step-btn').forEach((btn, i) => {
