@@ -325,8 +325,13 @@
             <span class="radio-content"><span class="radio-label">Chưa từng chạy marketing</span><span class="radio-sub">Đây là chiến dịch đầu tiên</span></span>
           </div>
         </div>
-        <div id="agency-detail-wrap" style="display:none;margin-top:8px;">
+        <div id="agency-detail-wrap" style="display:none;margin-top:8px;flex-direction:column;gap:10px;">
           <input type="text" id="agencyDetail" placeholder="Tên agency đang / đã làm việc cùng">
+          <div class="field" style="margin:0;">
+            <label style="font-size:13px;">Lý do tìm kiếm thêm agency mới?</label>
+            <div class="hint">Giúp PMAX hiểu rõ hơn kỳ vọng và điểm chưa hài lòng với agency hiện tại</div>
+            <textarea id="agencyReason" rows="2" placeholder="VD: Muốn tìm agency chuyên sâu hơn về performance, agency hiện tại không đáp ứng được KPI…"></textarea>
+          </div>
         </div>
       </div>
       <div class="nav-row">
@@ -400,8 +405,8 @@
       </div>
       <div class="field">
         <label>Historical data – Dữ liệu chiến dịch đã triển khai</label>
-        <div class="nda-badge">PMAX cam kết ký NDA bảo mật thông tin trước khi nhận data từ phía khách hàng</div>
-        <div class="hint" style="margin-top:6px;">Kết quả các chiến dịch đã chạy, benchmark, chỉ số tham khảo… <a href="https://docs.google.com/document/d/1CJCNknEwbKK15S7fonSVbQE7Ah3yLnETqNBfjoqhOuU/edit?usp=sharing" target="_blank" style="color:var(--pmax-blue);font-weight:600;text-decoration:none;">Xem hướng dẫn điền data →</a></div>
+        <div class="nda-badge">PMAX cam kết ký NDA bảo mật thông tin trước khi nhận data từ phía khách hàng &nbsp;·&nbsp; <a href="https://docs.google.com/document/d/1CJCNknEwbKK15S7fonSVbQE7Ah3yLnETqNBfjoqhOuU/edit?tab=t.0" target="_blank" style="color:#B84D00;font-weight:700;text-decoration:underline;">Xem bản NDA →</a></div>
+        <div class="hint" style="margin-top:6px;">Kết quả các chiến dịch đã chạy, benchmark, chỉ số tham khảo…</div>
         <textarea id="history" rows="3" placeholder="VD: Facebook Ads Q1/2025 - CPM 45k, CTR 1.2%, ROAS 3.5x&#10;Google Ads - CPC 8k, CVR 2.1%…"></textarea>
       </div>
       <div class="field">
@@ -447,7 +452,7 @@
         </div>
       </div>
       <div class="field" id="f-deadline">
-        <label>Deadline nộp proposal / báo giá <span class="req">*</span></label>
+        <label>Deadline kỳ vọng nộp báo giá <span class="req">*</span></label>
         <input type="date" id="deadline">
       </div>
       <div class="field-row">
@@ -702,7 +707,7 @@
     const radio = el.querySelector('input[type="radio"]');
     if (radio) radio.checked = true;
     if (name === 'agencyType') {
-      document.getElementById('agency-detail-wrap').style.display = (val === 'agency' || val === 'hybrid') ? 'block' : 'none';
+      document.getElementById('agency-detail-wrap').style.display = (val === 'agency' || val === 'hybrid') ? 'flex' : 'none';
     }
   }
   function selectTier(el, val) {
