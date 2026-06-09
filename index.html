@@ -129,14 +129,40 @@
   .summary-key{width:190px;flex-shrink:0;color:var(--pmax-gray-500);font-weight:500}
   .summary-val{color:var(--pmax-dark);font-weight:500;flex:1}
   .summary-empty{color:#b0bad0;font-style:italic;font-weight:400}
-  .success-card{display:none;background:var(--pmax-white);border-radius:var(--radius);border:1px solid var(--pmax-gray-200);padding:56px 32px;text-align:center;box-shadow:var(--shadow-card);animation:fadeUp 0.4s ease}
+  /* ── SUCCESS SCREEN ─────────────────────────────────── */
+  .success-card{display:none;animation:fadeUp 0.5s ease}
   .success-card.show{display:block}
-  .success-icon{width:72px;height:72px;background:#DCFCE7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 20px}
-  .success-title{font-size:23px;font-weight:800;color:var(--pmax-dark);margin-bottom:10px}
-  .success-sub{font-size:14px;color:var(--pmax-gray-500);line-height:1.7;max-width:400px;margin:0 auto 28px}
-  .success-detail{background:var(--pmax-gray-100);border-radius:var(--radius-sm);padding:16px 20px;text-align:left;max-width:480px;margin:0 auto;font-size:13px;color:var(--pmax-gray-700);line-height:1.8}
+
+  .success-hero{background:linear-gradient(135deg,#0033A0 0%,#0047CC 65%,#1A6FD4 100%);border-bottom:4px solid var(--pmax-orange);padding:44px 24px 40px;text-align:center}
+  .success-check{width:80px;height:80px;background:rgba(255,255,255,0.15);border:3px solid rgba(255,255,255,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 20px;backdrop-filter:blur(4px)}
+  .success-title{font-size:clamp(20px,4vw,26px);font-weight:800;color:#fff;letter-spacing:-0.5px;margin-bottom:10px}
+  .success-sub{font-size:14px;color:rgba(255,255,255,0.82);line-height:1.75;max-width:420px;margin:0 auto}
+  .success-sub strong{color:#fff}
+
+  .success-body{background:var(--pmax-white);border-radius:0 0 var(--radius) var(--radius);border:1px solid var(--pmax-gray-200);border-top:none;box-shadow:var(--shadow-card)}
+
+  .success-detail-wrap{padding:28px 28px 0}
+  .success-detail-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--pmax-blue);margin-bottom:12px}
+  .success-detail{background:var(--pmax-gray-100);border-radius:var(--radius-sm);padding:18px 20px;font-size:13px;color:var(--pmax-gray-700);line-height:2}
+
+  .success-steps{padding:24px 28px;display:flex;flex-direction:column;gap:0;border-bottom:1px solid var(--pmax-gray-100)}
+  .success-step{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid var(--pmax-gray-100)}
+  .success-step:last-child{border-bottom:none}
+  .success-step-num{width:32px;height:32px;border-radius:50%;background:var(--pmax-blue-pale);border:2px solid var(--pmax-blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--pmax-blue);flex-shrink:0;font-family:'DM Mono',monospace}
+  .success-step-text{flex:1;padding-top:4px}
+  .success-step-text strong{font-size:13.5px;color:var(--pmax-dark);display:block;margin-bottom:2px}
+  .success-step-text span{font-size:12.5px;color:var(--pmax-gray-500);line-height:1.5}
+
+  .success-cta{padding:24px 28px 28px;text-align:center}
+  .success-cta p{font-size:13px;color:var(--pmax-gray-500);margin-bottom:16px;line-height:1.6}
+  .btn-pmax-site{display:inline-flex;align-items:center;gap:9px;background:var(--pmax-blue);color:white;padding:13px 32px;border-radius:var(--radius-sm);font-family:'Be Vietnam Pro',sans-serif;font-size:14px;font-weight:700;text-decoration:none;transition:var(--transition);border-left:4px solid var(--pmax-orange);box-shadow:0 2px 12px rgba(0,51,160,0.18)}
+  .btn-pmax-site:hover{background:var(--pmax-blue-light);box-shadow:0 6px 24px rgba(0,51,160,0.3);transform:translateY(-2px)}
+  .success-contact{margin-top:14px;font-size:12px;color:var(--pmax-gray-500)}
+  .success-contact a{color:var(--pmax-blue);font-weight:600;text-decoration:none}
+  .success-contact a:hover{text-decoration:underline}
   .site-footer{max-width:780px;margin:0 auto;padding:24px;text-align:center;font-size:12px;color:var(--pmax-gray-500)}
-  .site-footer a{color:var(--pmax-blue);text-decoration:none}
+  .site-footer a{color:var(--pmax-blue);text-decoration:none;font-weight:600}
+  .site-footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -536,16 +562,65 @@
 
   <!-- SUCCESS -->
   <div class="success-card" id="successCard">
-    <div class="success-icon">🎉</div>
-    <div class="success-title">Đã nhận được Brief!</div>
-    <div class="success-sub">Cảm ơn bạn đã chia sẻ thông tin. Đội ngũ PMAX sẽ liên hệ với bạn trong vòng <strong>1 ngày làm việc</strong>.</div>
-    <div class="success-detail" id="successDetail"></div>
+
+    <!-- Hero banner (same style as page hero) -->
+    <div class="success-hero">
+      <div class="success-check">✅</div>
+      <div class="success-title">Cảm ơn bạn đã gửi Brief đến PMAX!</div>
+      <div class="success-sub">Brief đã được tiếp nhận thành công. Đội ngũ BD của PMAX sẽ đọc kỹ và liên hệ lại trong vòng <strong>1–2 ngày làm việc</strong> để xác nhận và trao đổi thêm.</div>
+    </div>
+
+    <div class="success-body">
+
+      <!-- Tóm tắt thông tin đã gửi -->
+      <div class="success-detail-wrap">
+        <div class="success-detail-label">📋 Thông tin đã gửi</div>
+        <div class="success-detail" id="successDetail"></div>
+      </div>
+
+      <!-- Các bước tiếp theo -->
+      <div class="success-steps">
+        <div class="success-step">
+          <div class="success-step-num">1</div>
+          <div class="success-step-text">
+            <strong>PMAX tiếp nhận & phân tích Brief</strong>
+            <span>Đội ngũ sẽ đọc kỹ thông tin, đánh giá mức độ phù hợp và xác định hướng tiếp cận tối ưu cho chiến dịch của bạn.</span>
+          </div>
+        </div>
+        <div class="success-step">
+          <div class="success-step-num">2</div>
+          <div class="success-step-text">
+            <strong>Liên hệ xác nhận trong 1–2 ngày làm việc</strong>
+            <span>BD Executive của PMAX sẽ chủ động liên hệ qua email hoặc điện thoại để xác nhận thông tin và hẹn lịch làm việc.</span>
+          </div>
+        </div>
+        <div class="success-step">
+          <div class="success-step-num">3</div>
+          <div class="success-step-text">
+            <strong>Trao đổi & chuẩn bị đề xuất</strong>
+            <span>Sau buổi trao đổi, PMAX sẽ chuẩn bị proposal/media plan phù hợp với mục tiêu và ngân sách của bạn.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA website -->
+      <div class="success-cta">
+        <p>Trong lúc chờ, bạn có thể tìm hiểu thêm về năng lực, case studies và các dịch vụ của PMAX.</p>
+        <a class="btn-pmax-site" href="https://pmax.vn" target="_blank" rel="noopener">
+          🌐 Khám phá PMAX tại pmax.vn
+        </a>
+        <div class="success-contact">
+          Cần hỗ trợ gấp? Liên hệ trực tiếp qua <a href="mailto:business@pmax.vn">business@pmax.vn</a>
+        </div>
+      </div>
+
+    </div>
   </div>
 
 </main>
 
 <footer class="site-footer">
-  © 2025 PMAX Agency · <a href="https://pmax.vn" target="_blank">pmax.vn</a> · Thông tin được bảo mật và chỉ dùng nội bộ
+  © 2026 PMAX Agency · <a href="https://pmax.vn" target="_blank" rel="noopener">pmax.vn</a> · Thông tin được bảo mật và chỉ dùng nội bộ
 </footer>
 
 <script>
@@ -797,12 +872,15 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzqm9jrNPr4QU6H2hfPI
     document.getElementById('stepper').style.display = 'none';
     document.querySelector('.progress-wrap').style.display = 'none';
     document.getElementById('successCard').classList.add('show');
+    const row = (label, val) => val ? `<div><strong>${label}:</strong> ${val}</div>` : '';
     document.getElementById('successDetail').innerHTML =
-      `<strong>Công ty:</strong> ${p.company} (${p.brand})<br>
-       <strong>Người gửi:</strong> ${p.pic.name} · ${p.pic.email}<br>
-       <strong>Ngân sách:</strong> ${p.budget.tier||'-'} · ${p.budget.exact}<br>
-       <strong>Deadline proposal:</strong> ${p.deadline||'-'}<br>
-       <strong>Bắt đầu dự kiến:</strong> ${p.startDate||'-'}`;
+      row('Công ty', p.company + (p.brand ? ` (${p.brand})` : '')) +
+      row('Người phụ trách', [p.pic.name, p.pic.title].filter(Boolean).join(' · ') + (p.pic.email ? ` · ${p.pic.email}` : '')) +
+      row('Số điện thoại', p.pic.phone) +
+      row('Ngân sách', [p.budget.tier, p.budget.exact].filter(Boolean).join(' · ')) +
+      row('Mục tiêu chiến dịch', p.goals ? p.goals.substring(0,120)+(p.goals.length>120?'…':'') : '') +
+      row('Deadline proposal', p.deadline) +
+      row('Bắt đầu dự kiến', p.startDate);
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 
